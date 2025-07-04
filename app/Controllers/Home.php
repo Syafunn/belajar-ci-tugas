@@ -4,12 +4,14 @@ namespace App\Controllers;
 
 use App\Models\ProductModel; 
 use App\Models\TransactionModel; 
-use App\Models\TransactionDetailModel; 
+use App\Models\TransactionDetailModel;
+use App\Models\DiskonModel;
 class Home extends BaseController
 {
     protected $product;
     protected $transaction;
     protected $transaction_detail;
+    protected $diskon;
 
     function __construct()
     {
@@ -18,13 +20,24 @@ class Home extends BaseController
         $this->product = new ProductModel();
         $this->transaction = new TransactionModel();
         $this->transaction_detail = new TransactionDetailModel();
+        $this->diskon = new DiskonModel();
     }
     public function index()
     {
-       $product = $this->product->findAll();
-       $data['product'] = $product;
+        $product = $this->product->findAll();
+        $data['product'] = $product;
 
-       return view('v_home', $data);
+        // Cek diskon aktif hari ini
+        $today = date('Y-m-d');
+        $diskon = $this->diskon->where('tanggal', $today)->first();
+
+        if ($diskon) {
+            session()->set('diskon', $diskon['nominal']);
+        } else {
+            session()->remove('diskon');
+        }
+
+        return view('v_home',$data);
     }
 
     public function profile()
@@ -51,4 +64,17 @@ class Home extends BaseController
 
     return view('v_profile', $data);
     }
+
+    public function diskon()
+    {
+        $today = date('Y-m-d');
+        $diskon = $this->diskon->where('tanggal_mulai <=', $today)
+                               ->where('tanggal_selesai >=', $today)
+                               ->findAll();
+
+        $data['diskon'] = $diskon;
+
+        return view('v_diskon',$data);
+    }
+
 }

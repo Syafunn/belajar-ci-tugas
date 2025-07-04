@@ -16,6 +16,20 @@
   </form>
 </div><!-- End Search Bar -->
 
+<?php
+$nominalDiskon = session()->get('nominal_diskon');
+?>
+<?php if ($nominalDiskon && $nominalDiskon > 0): ?>
+    <li class="nav-item" style="list-style: none;">
+        <a class="nav-link nav-icon" href="#">
+            <span class="badge bg-warning badge-number">
+               Hari ini ada diskon <?= number_format($nominalDiskon, 0, '', '') ?> per item
+            </span>
+        </a>
+    </li>
+<?php endif; ?>
+
+
 <nav class="header-nav ms-auto">
   <ul class="d-flex align-items-center">
 

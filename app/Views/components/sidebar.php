@@ -29,7 +29,19 @@
         </li><!-- End Produk Nav -->
         <?php
     }
-    ?>
+    ?>  
+
+    <?php if(session()->get('role') == 'admin') : ?>
+    <li class="nav-item">
+    <a class="nav-link <?= (url_is('diskon*')) ? 'active' : 'collapsed' ?>" 
+       href="<?= base_url('diskon') ?>">
+       <i class="bi bi-tag-fill"></i>
+       <span>Diskon</span>
+    </a>
+    </li>
+    <?php
+    endif
+    ;?>
 
      <?php
     if (session()->get('role') == 'admin') {

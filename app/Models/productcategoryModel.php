@@ -5,9 +5,9 @@ use CodeIgniter\Model;
 
 class productcategoryModel extends Model
 {
-	protected $table = 'product_category'; 
+	protected $table = 'productkategory'; 
 	protected $primaryKey = 'id';
 	protected $allowedFields = [
-		'category_name','description','created_at','updated_at'
+		'nama','description','created_at','updated_at'
 	];  
 }

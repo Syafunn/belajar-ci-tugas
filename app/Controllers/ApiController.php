@@ -2,12 +2,14 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
+use CodeIgniter\HTTP\ResponseInterface;
 
-use App\Models\UserModel; 
-use App\Models\TransactionModel; 
-use App\Models\TransactionDetailModel; 
+use App\Models\UserModel;
+use App\Models\TransactionModel;
+use App\Modela\TransactionDetailModel;
+use App\Models\TransactionDetailModel as ModelsTransactionDetailModel;
+
 class ApiController extends ResourceController
 {
     protected $apiKey;
@@ -20,8 +22,13 @@ class ApiController extends ResourceController
         $this->apiKey = env('API_KEY');
         $this->user = new UserModel();
         $this->transaction = new TransactionModel();
-        $this->transaction_detail = new TransactionDetailModel();
+        $this->transaction_detail = new ModelsTransactionDetailModel();
     }
+    /**
+     * Return an array of resource objects, themselves in array format.
+     *
+     * @return ResponseInterface
+     */
     public function index()
 {
     $data = [ 
@@ -40,29 +47,23 @@ class ApiController extends ResourceController
             $penjualan = $this->transaction->findAll();
             
             foreach ($penjualan as &$pj) {
-                $pj['details'] = $this->transaction_detail->where('transaction_id', $pj['id'])->findAll();
+                $details = $this->transaction_detail
+                    ->where('transaction_id', $pj['id'])
+                    ->findAll();
+
+                $pj['details'] = $details;
+
+                // Tambahkan jumlah item
+                $pj['jumlah_item'] = array_sum(array_column($details, 'jumlah'));
             }
 
             $data['status'] = ["code" => 200, "description" => "OK"];
             $data['results'] = $penjualan;
-
         }
     } 
 
     return $this->respond($data);
 }
-
-    /**
-     * Return the properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function show($id = null)
-    {
-        //
-    }
 
     /**
      * Return a new resource object, with default properties.
