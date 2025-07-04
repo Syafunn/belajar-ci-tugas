@@ -30,6 +30,22 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
   - Manajemen akun
 - UI Responsif dengan NiceAdmin template
 
+-Fitur Tambahan: Diskon Harga Produk
+  -Fitur ini memungkinkan admin untuk menambahkan diskon otomatis yang berlaku pada tanggal tertentu. Diskon akan otomatis diterapkan pada setiap produk yang dibeli oleh       pengguna di hari tersebut.
+  1. **Manajemen Diskon (CRUD Diskon)**
+   - Admin dapat menambahkan, mengedit, dan menghapus diskon melalui halaman khusus.
+   - Diskon hanya berlaku untuk **tanggal tertentu**.
+
+2. **Display Diskon di Header & Sidebar**
+   - Di **Header** dan **Sidebar**, notifikasi otomatis muncul jika hari ini terdapat diskon.
+   - Notifikasi ini menampilkan nominal diskon aktif (contoh: "Hari ini ada diskon Rp 1.000 per item").
+
+3. **Otomatis Mengurangi Harga di Keranjang**
+   - Saat pengguna memasukkan produk ke keranjang, sistem otomatis mengurangi harga produk sesuai nominal diskon hari ini.
+
+4. **Pencatatan Diskon di Transaksi**
+   - Diskon yang berlaku juga dicatat saat transaksi dilakukan.
+
 ## Persyaratan Sistem
 
 - PHP >= 8.2
